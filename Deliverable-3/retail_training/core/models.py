@@ -14,7 +14,7 @@ class User(AbstractUser):
 # Department Model
 class Department(models.Model):
     name = models.CharField(max_length=100)
-    manager = models.OneToOneField('Manager', on_delete=models.SET_NULL, null=True, blank=True)
+    manager = models.OneToOneField('Manager', on_delete=models.SET_NULL, null=True, blank=True, related_name='managed_department')
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class Admin(models.Model):
 
 class Manager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='managers')
 
 class Trainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
