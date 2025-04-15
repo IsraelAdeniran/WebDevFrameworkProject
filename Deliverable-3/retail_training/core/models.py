@@ -64,3 +64,21 @@ class Completion(models.Model):
 
     class Meta:
         unique_together = ('employee', 'module')
+
+# Feedback Model
+class Feedback(models.Model):
+    user = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    module = models.ForeignKey(TrainingModule, on_delete=models.CASCADE)
+    comment = models.TextField(blank=True)
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'module')
+
+# Feedback - Response Model
+class FeedbackResponse(models.Model):
+    feedback = models.OneToOneField(Feedback, on_delete=models.CASCADE)
+    responder = models.ForeignKey(Trainer, on_delete=models.CASCADE)
+    response_text = models.TextField()
+    responded_at = models.DateTimeField(auto_now_add=True)
