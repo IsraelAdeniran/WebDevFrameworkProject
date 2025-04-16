@@ -23,6 +23,8 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name'] # Prompt for Name & Email
+
 # Department Model
 class Department(models.Model):
     name = models.CharField(max_length=100)
