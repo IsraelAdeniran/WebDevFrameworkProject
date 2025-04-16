@@ -1,7 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager
 
 # User Model
+class CustomUserManager(UserManager):
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('role', 'admin')  # Automatically sets role
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return super().create_superuser(username, email, password, **extra_fields)
+
+
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Admin'),
@@ -10,6 +20,8 @@ class User(AbstractUser):
         ('employee', 'Employee'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+
+    objects = CustomUserManager()
 
 # Department Model
 class Department(models.Model):

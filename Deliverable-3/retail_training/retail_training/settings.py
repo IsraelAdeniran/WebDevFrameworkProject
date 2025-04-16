@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'widget_tweaks',
     'core',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
