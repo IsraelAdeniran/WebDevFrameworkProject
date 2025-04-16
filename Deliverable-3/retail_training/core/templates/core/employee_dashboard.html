@@ -3,6 +3,6 @@
 
 <h1>Employee Dashboard</h1>
 <p>Welcome, {{ user.get_full_name }}</p>
-<p>Your role is: {{ user.role }}</p>
+<p>Your role is: {{ user.role|capfirst }}</p>
 
 </html>
