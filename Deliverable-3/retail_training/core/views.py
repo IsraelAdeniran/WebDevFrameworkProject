@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Manager, Assignment, Employee, Trainer, TrainingModule
 
 @login_required
 def dashboard_redirect(request):
@@ -18,12 +19,38 @@ def dashboard_redirect(request):
 
 @login_required
 def manager_dashboard(request):
-    return render(request, 'core/manager_dashboard.html')
+    # Get the manager object for this user
+    manager = Manager.objects.get(user=request.user)
+    department = manager.department
+
+    # Get all assignments for employees in this manager's department
+    assignments = Assignment.objects.filter(employee__department=department)
+
+    context = {
+        'assignments': assignments,
+        'department': department,
+    }
+    return render(request, 'core/manager_dashboard.html', context)
 
 @login_required
 def trainer_dashboard(request):
-    return render(request, 'core/trainer_dashboard.html')
+    trainer = Trainer.objects.get(user=request.user)
+    modules = TrainingModule.objects.filter(created_by=trainer)
+
+    context = {
+        'modules': modules,
+    }
+    return render(request, 'core/trainer_dashboard.html', context)
+
 
 @login_required
 def employee_dashboard(request):
-    return render(request, 'core/employee_dashboard.html')
+    employee = Employee.objects.get(user=request.user)
+    assignments = Assignment.objects.filter(employee=employee)
+    department = employee.department
+
+    context = {
+        'assignments': assignments,
+        'department': department,
+    }
+    return render(request, 'core/employee_dashboard.html', context)

@@ -4,5 +4,29 @@
 <h1>Manager Dashboard</h1>
 <p>Welcome, {{ user.get_full_name }} ({{ user.username }})</p>
 <p>Your role is: {{ user.role|capfirst }}</p>
+<p>Your department is: {{ department.name|capfirst }}</p>
+
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Module</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for assignment in assignments %}
+        <tr>
+            <td>{{ assignment.employee.user.get_full_name }}</td>
+            <td>{{ assignment.module.title }}</td>
+            <td>{{ assignment.status }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No assignments found for your department.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 </html>
