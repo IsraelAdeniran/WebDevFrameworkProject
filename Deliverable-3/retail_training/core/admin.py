@@ -53,12 +53,18 @@ class ManagerAdmin(admin.ModelAdmin):
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['user', 'department']
 
-
 class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'manager', 'get_employees']
+
     def get_fields(self, request, obj=None):
         if obj:
             return ['name', 'manager']
         return ['name']
+
+    def get_employees(self, obj):
+        employees = obj.employees.all()
+        return ", ".join([e.user.get_full_name() for e in employees])
+    get_employees.short_description = "Employees"
 
 
 admin.site.register(User, UserAdmin)
