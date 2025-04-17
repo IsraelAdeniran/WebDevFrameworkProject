@@ -27,7 +27,7 @@ class CustomUserCreationForm(UserCreationForm):
 # Custom UserAdmin
 class UserAdmin(BaseUserAdmin):
     model = User
-    list_display = ('username', 'email', 'role', 'is_staff')
+    list_display = ('username', 'get_full_name', 'email', 'role', 'is_staff')
     list_filter = ('role', 'is_staff', 'is_superuser')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -46,12 +46,27 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('username',)
     add_form = CustomUserCreationForm
 
+# Custom Manager, Department & Employee Admin
+class ManagerAdmin(admin.ModelAdmin):
+    list_display = ['user']
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ['user', 'department']
+
+
+class DepartmentAdmin(admin.ModelAdmin):
+    def get_fields(self, request, obj=None):
+        if obj:
+            return ['name', 'manager']
+        return ['name']
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Admin)
-admin.site.register(Manager)
+admin.site.register(Manager, ManagerAdmin)
 admin.site.register(Trainer)
-admin.site.register(Employee)
-admin.site.register(Department)
+admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(TrainingModule)
 admin.site.register(Assignment)
 admin.site.register(Completion)

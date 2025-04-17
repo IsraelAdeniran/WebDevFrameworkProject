@@ -37,16 +37,28 @@ class Department(models.Model):
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user.get_full_name()} (Admin)"
+
 class Manager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='managers')
 
+    def __str__(self):
+        return f"{self.user.get_full_name()} (Manager)"
+
 class Trainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user.get_full_name()} (Trainer)"
+
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.get_full_name()} (Employee)"
 
 # Training - Module Model
 class TrainingModule(models.Model):
@@ -70,6 +82,9 @@ class Assignment(models.Model):
     assigned_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Started')
 
+    def __str__(self):
+        return f"{self.employee.user.get_full_name()} → {self.module.title} [{self.status}]"
+
 # Completion Model
 class Completion(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
@@ -78,6 +93,9 @@ class Completion(models.Model):
 
     class Meta:
         unique_together = ('employee', 'module')
+
+    def __str__(self):
+        return f"{self.employee.user.get_full_name()} completed {self.module.title}"
 
 # Feedback Model
 class Feedback(models.Model):
@@ -90,9 +108,15 @@ class Feedback(models.Model):
     class Meta:
         unique_together = ('user', 'module')
 
+    def __str__(self):
+        return f"Feedback by {self.user.user.get_full_name()} on {self.module.title}"
+
 # Feedback - Response Model
 class FeedbackResponse(models.Model):
     feedback = models.OneToOneField(Feedback, on_delete=models.CASCADE)
     responder = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     response_text = models.TextField()
     responded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Response by {self.responder.user.get_full_name()} to feedback #{self.feedback.id}"
