@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assgin Training</title>
+</head>
+
+<h1>Assign Training</h1>
+<p>Welcome, {{ user.get_full_name }} ({{ user.username }})</p>
+<p>Your role is: {{ user.role|capfirst }}</p>
+<p>Your department is: {{ department.name|capfirst }}</p>
+
+<body>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Assign</button>
+</form>
+
+</body>
+</html>

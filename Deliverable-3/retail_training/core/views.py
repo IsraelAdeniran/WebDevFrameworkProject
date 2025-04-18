@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Manager, Assignment, Employee, Trainer, TrainingModule
-from .forms import TrainingModuleForm
+from .forms import TrainingModuleForm, AssignmentForm
 
 @login_required
 def dashboard_redirect(request):
@@ -70,3 +70,22 @@ def create_training_module(request):
         form = TrainingModuleForm()
 
     return render(request, 'core/create_training_module.html', {'form': form})
+
+@login_required
+def assign_training(request):
+    manager = Manager.objects.get(user=request.user)
+    department = manager.department
+
+    # Limit employee and module choices
+    form = AssignmentForm(request.POST or None)
+    form.fields['employee'].queryset = Employee.objects.filter(department=department)
+    form.fields['module'].queryset = TrainingModule.objects.all()
+
+    if request.method == 'POST' and form.is_valid():
+        assignment = form.save(commit=False)
+        assignment.assigned_by = manager
+        assignment.status = 'Not Started'
+        assignment.save()
+        return redirect('manager_dashboard')
+
+    return render(request, 'core/assign_training.html', {'form': form})
