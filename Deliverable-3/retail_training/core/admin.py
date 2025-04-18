@@ -66,6 +66,9 @@ class DepartmentAdmin(admin.ModelAdmin):
         return ", ".join([e.user.get_full_name() for e in employees])
     get_employees.short_description = "Employees"
 
+# Custom Training Module Admin
+class TrainingModuleAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created_by', 'description']
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Admin)
@@ -73,7 +76,7 @@ admin.site.register(Manager, ManagerAdmin)
 admin.site.register(Trainer)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Department, DepartmentAdmin)
-admin.site.register(TrainingModule)
+admin.site.register(TrainingModule, TrainingModuleAdmin)
 admin.site.register(Assignment)
 admin.site.register(Completion)
 admin.site.register(Feedback)
