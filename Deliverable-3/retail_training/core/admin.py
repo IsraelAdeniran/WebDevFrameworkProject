@@ -74,6 +74,16 @@ class TrainingModuleAdmin(admin.ModelAdmin):
 class CompletionAdmin(admin.ModelAdmin):
     list_display = ['employee', 'module', 'completed_on']
 
+#Custom Feedback Admin
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ['user', 'module', 'rating', 'created_at', 'short_comment']
+    search_fields = ['user__user__first_name', 'user__user__last_name', 'module__title']
+    list_filter = ['rating', 'created_at', 'module']
+
+    def short_comment(self, obj):
+        return (obj.comment[:50] + '...') if len(obj.comment) > 50 else obj.comment
+    short_comment.short_description = "Comment"
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Admin)
 admin.site.register(Manager, ManagerAdmin)
@@ -83,5 +93,5 @@ admin.site.register(Department, DepartmentAdmin)
 admin.site.register(TrainingModule, TrainingModuleAdmin)
 admin.site.register(Assignment)
 admin.site.register(Completion,CompletionAdmin)
-admin.site.register(Feedback)
+admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(FeedbackResponse)

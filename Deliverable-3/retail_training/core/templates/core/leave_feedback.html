@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave Feedback</title>
+</head>
+
+<body>
+    <h1>Leave Feedback for {{ module.title }}</h1>
+    <p>Welcome, {{ user.get_full_name }}</p>
+    <p>Your role is: {{ user.role|capfirst }}</p>
+    <p>Your department is: {{ department.name|capfirst }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Feedback</button>
+    </form>
+
+</body>
+
+</html>

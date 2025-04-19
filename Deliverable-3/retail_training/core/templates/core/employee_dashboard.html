@@ -38,13 +38,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if assignment.status != 'Completed' %}
-                        <form action="{% url 'complete_assignment' assignment.id %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit">Mark as Completed</button>
-                        </form>
-                    {% else %}
-                        ✔️ Completed
+                    {% if assignment.status == 'Completed' %}
+                        {% if assignment.feedback_given %}
+                            ✔️ Feedback Given
+                        {% else %}
+                            <a href="{% url 'leave_feedback' assignment.id %}">Leave Feedback</a>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>
@@ -56,5 +55,4 @@
         </tbody>
     </table>
 </body>
-
 </html>
