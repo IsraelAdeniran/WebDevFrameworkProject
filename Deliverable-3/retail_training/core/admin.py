@@ -48,7 +48,7 @@ class UserAdmin(BaseUserAdmin):
 
 # Custom Manager, Department & Employee Admin
 class ManagerAdmin(admin.ModelAdmin):
-    list_display = ['user']
+    list_display = ['user', 'department']
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['user', 'department']
@@ -70,6 +70,10 @@ class DepartmentAdmin(admin.ModelAdmin):
 class TrainingModuleAdmin(admin.ModelAdmin):
     list_display = ['title', 'created_by', 'description']
 
+# Custom Completion Module Admin
+class CompletionAdmin(admin.ModelAdmin):
+    list_display = ['employee', 'module', 'completed_on']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Admin)
 admin.site.register(Manager, ManagerAdmin)
@@ -78,6 +82,6 @@ admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(TrainingModule, TrainingModuleAdmin)
 admin.site.register(Assignment)
-admin.site.register(Completion)
+admin.site.register(Completion,CompletionAdmin)
 admin.site.register(Feedback)
 admin.site.register(FeedbackResponse)

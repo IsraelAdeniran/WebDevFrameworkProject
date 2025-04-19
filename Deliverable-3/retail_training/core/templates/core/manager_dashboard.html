@@ -17,6 +17,7 @@
             <th>Employee</th>
             <th>Module</th>
             <th>Status</th>
+            <th>Completed On</th>
         </tr>
     </thead>
     <tbody>
@@ -25,10 +26,21 @@
             <td>{{ assignment.employee.user.get_full_name }}</td>
             <td>{{ assignment.module.title }}</td>
             <td>{{ assignment.status }}</td>
+            <td>
+                {% if assignment.status == 'Completed' %}
+                    {% for completion in assignment.employee.completion_set.all %}
+                        {% if completion.module == assignment.module %}
+                            {{ completion.completed_on }}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="3">No assignments found for your department.</td>
+            <td colspan="4">No assignments found for your department.</td>
         </tr>
         {% endfor %}
     </tbody>

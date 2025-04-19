@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Manager, Assignment, Employee, Trainer, TrainingModule
+from .models import Manager, Assignment, Employee, Trainer, TrainingModule, Completion
 from .forms import TrainingModuleForm, AssignmentForm
 
 @login_required
@@ -89,3 +89,25 @@ def assign_training(request):
         return redirect('manager_dashboard')
 
     return render(request, 'core/assign_training.html', {'form': form})
+
+@login_required
+def complete_assignment(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
+
+    employee = Employee.objects.get(user=request.user)
+    if assignment.employee != employee:
+        return redirect('employee_dashboard')
+
+    #  status
+    assignment.status = 'Completed'
+    assignment.save()
+
+    completion, created = Completion.objects.get_or_create(
+        employee=employee,
+        module=assignment.module
+    )
+
+    if created:
+        print("Completion recorded at:", completion.completed_on)
+
+    return redirect('employee_dashboard')
