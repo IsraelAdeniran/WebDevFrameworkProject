@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Respont to Feedback</title>
+</head>
+<body>
+
+    <h1>Respond to Feedback</h1>
+
+    <p>Welcome, {{ user.get_full_name }}</p>
+    <p>Your role is: {{ user.role|capfirst }}</p>
+
+    <p><strong>Module:</strong> {{ feedback.module.title }}</p>
+    <p><strong>Employee:</strong> {{ feedback.user.user.get_full_name }}</p>
+    <p><strong>Rating:</strong> {{ feedback.rating }}</p>
+    <p><strong>Comment:</strong> {{ feedback.comment }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Response</button>
+    </form>
+
+</body>
+</html>

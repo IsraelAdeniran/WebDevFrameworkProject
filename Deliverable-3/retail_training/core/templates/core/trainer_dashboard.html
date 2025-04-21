@@ -19,16 +19,31 @@
     </thead>
     <tbody>
         {% for module in modules %}
-        <tr>
-            <td>{{ module.title }}</td>
-            <td>{{ module.description }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="2">You have not created any modules yet.</td>
-        </tr>
+            <tr>
+                <td colspan="2"><strong>{{ module.title }}</strong><br>{{ module.description }}</td>
+            </tr>
+
+            {% for feedback in module.feedback_set.all %}
+                <tr>
+                    <td><strong>{{ feedback.user.user.get_full_name }}</strong></td>
+                    <td>
+                        Rating: {{ feedback.rating }}<br>
+                        Comment: {{ feedback.comment }}<br>
+                        {% if not feedback.feedbackresponse %}
+                            <a href="{% url 'respond_to_feedback' feedback.id %}">Respond</a>
+                        {% else %}
+                            ✅ Response submitted
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2">No feedback yet.</td>
+                </tr>
+            {% endfor %}
         {% endfor %}
     </tbody>
+
 </table>
 
 <p><a href="{% url 'create_training_module' %}">+ Create New Module</a></p>

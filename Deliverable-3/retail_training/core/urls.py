@@ -14,4 +14,5 @@ urlpatterns = [
     path('manager/assign/', views.assign_training, name='assign_training'),
     path('employee/complete/<int:assignment_id>/', views.complete_assignment, name='complete_assignment'),
     path('employee/feedback/<int:assignment_id>/', views.leave_feedback, name='leave_feedback'),
+    path('trainer/respond/<int:feedback_id>/', views.respond_to_feedback, name='respond_to_feedback'),
 ]

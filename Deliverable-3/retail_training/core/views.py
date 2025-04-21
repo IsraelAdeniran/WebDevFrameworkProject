@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Manager, Assignment, Employee, Trainer, TrainingModule, Completion, Feedback
-from .forms import TrainingModuleForm, AssignmentForm, FeedbackForm
+from .models import Manager, Assignment, Employee, Trainer, TrainingModule, Completion, Feedback, FeedbackResponse
+from .forms import TrainingModuleForm, AssignmentForm, FeedbackForm, FeedbackResponseForm
 
 @login_required
 def dashboard_redirect(request):
@@ -145,3 +145,31 @@ def leave_feedback(request, assignment_id):
         form = FeedbackForm()
 
     return render(request, 'core/leave_feedback.html', {'form': form, 'module': assignment.module, 'department': department})
+
+@login_required
+def respond_to_feedback(request, feedback_id):
+    trainer = Trainer.objects.get(user=request.user)
+    feedback = Feedback.objects.get(id=feedback_id)
+
+    # Ensure trainer owns the module
+    if feedback.module.created_by != trainer:
+        return redirect('trainer_dashboard')
+
+    if FeedbackResponse.objects.filter(feedback=feedback).exists():
+        return redirect('trainer_dashboard')
+
+    if request.method == 'POST':
+        form = FeedbackResponseForm(request.POST)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.feedback = feedback
+            response.responder = trainer
+            response.save()
+            return redirect('trainer_dashboard')
+    else:
+        form = FeedbackResponseForm()
+
+    return render(request, 'core/respond_to_feedback.html', {
+        'form': form,
+        'feedback': feedback
+    })
