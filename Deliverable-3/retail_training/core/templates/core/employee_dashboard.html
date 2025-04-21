@@ -47,6 +47,24 @@
                     {% endif %}
                 </td>
             </tr>
+
+            {% if assignment.status == 'Completed' %}
+                {% for feedback in assignment.employee.feedback_set.all %}
+                    {% if feedback.module == assignment.module %}
+                        <tr>
+                            <td colspan="4" style="background-color: #f9f9f9;">
+                                <strong>Your Feedback:</strong> {{ feedback.comment }} ({{ feedback.rating }}/5)<br>
+                                {% if feedback.feedbackresponse %}
+                                    <strong>Trainer Response:</strong> {{ feedback.feedbackresponse.response_text }}
+                                {% else %}
+                                    <em>Waiting for trainer response...</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             {% empty %}
             <tr>
                 <td colspan="4">You have no assigned modules.</td>
