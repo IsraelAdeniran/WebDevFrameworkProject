@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ assignment.module.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>{{ assignment.module.title }}</h1>
+    <p class="lead">{{ assignment.module.description }}</p>
+
+    <hr>
+    <p>This is a placeholder for training content.</p>
+    <p>After reading the material, you can mark this module as completed.</p>
+
+    <form method="post" action="{% url 'complete_assignment' assignment.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Mark as Completed</button>
+    </form>
+</div>
+</body>
+</html>

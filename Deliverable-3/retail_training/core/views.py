@@ -173,3 +173,19 @@ def respond_to_feedback(request, feedback_id):
         'form': form,
         'feedback': feedback
     })
+
+@login_required
+def training_module_page(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
+    employee = Employee.objects.get(user=request.user)
+
+    # Only allow assigned employee to view this page
+    if assignment.employee != employee:
+        return redirect('employee_dashboard')
+
+    # Automatically mark as "In Progress" if not already started
+    if assignment.status == 'Not Started':
+        assignment.status = 'In Progress'
+        assignment.save()
+
+    return render(request, 'core/training_module_page.html', {'assignment': assignment})
