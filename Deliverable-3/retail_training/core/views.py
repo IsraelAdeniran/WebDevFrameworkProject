@@ -96,7 +96,7 @@ def assign_training(request):
         assignment.save()
         return redirect('manager_dashboard')
 
-    return render(request, 'core/assign_training.html', {'form': form})
+    return render(request, 'core/assign_training.html', {'form': form, 'department': department})
 
 @login_required
 def complete_assignment(request, assignment_id):
