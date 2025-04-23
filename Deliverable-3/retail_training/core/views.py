@@ -84,19 +84,33 @@ def assign_training(request):
     manager = Manager.objects.get(user=request.user)
     department = manager.department
 
-    # Limit employee and module choices
     form = AssignmentForm(request.POST or None)
     form.fields['employee'].queryset = Employee.objects.filter(department=department)
     form.fields['module'].queryset = TrainingModule.objects.all()
 
     if request.method == 'POST' and form.is_valid():
         assignment = form.save(commit=False)
+        employee = assignment.employee
+        module = assignment.module
+
+        # Check if already completed
+        if Assignment.objects.filter(employee=employee, module=module, status='Completed').exists():
+            # Optionally show a message
+            return render(request, 'core/assign_training.html', {
+                'form': form,
+                'department': department,
+                'error': f"{employee.user.get_full_name()} has already completed {module.title}."
+            })
+
         assignment.assigned_by = manager
         assignment.status = 'Not Started'
         assignment.save()
         return redirect('manager_dashboard')
 
-    return render(request, 'core/assign_training.html', {'form': form, 'department': department})
+    return render(request, 'core/assign_training.html', {
+        'form': form,
+        'department': department
+    })
 
 @login_required
 def complete_assignment(request, assignment_id):
@@ -119,6 +133,22 @@ def complete_assignment(request, assignment_id):
         print("Completion recorded at:", completion.completed_on)
 
     return redirect('employee_dashboard')
+
+@login_required
+def remove_assignment(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
+    manager = Manager.objects.get(user=request.user)
+
+    # Ensure the manager is only modifying assignments within their department
+    if assignment.employee.department != manager.department:
+        return redirect('manager_dashboard')
+
+    # Optionally, prevent removing completed assignments:
+    if assignment.status == 'Completed':
+        return redirect('manager_dashboard')
+
+    assignment.delete()
+    return redirect('manager_dashboard')
 
 @login_required
 def leave_feedback(request, assignment_id):

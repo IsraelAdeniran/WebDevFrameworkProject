@@ -13,6 +13,7 @@ urlpatterns = [
     path('trainer/create-module/', views.create_training_module, name='create_training_module'),
     path('manager/assign/', views.assign_training, name='assign_training'),
     path('employee/complete/<int:assignment_id>/', views.complete_assignment, name='complete_assignment'),
+    path('manager/remove-assignment/<int:assignment_id>/', views.remove_assignment, name='remove_assignment'),
     path('employee/feedback/<int:assignment_id>/', views.leave_feedback, name='leave_feedback'),
     path('trainer/respond/<int:feedback_id>/', views.respond_to_feedback, name='respond_to_feedback'),
     path('employee/module/<int:assignment_id>/', views.training_module_page, name='training_module_page'),
