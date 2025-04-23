@@ -1,0 +1,226 @@
+[
+{
+  "model": "core.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$XIZseWfxBMhZQT2hn12y0K$SVOYvSriWtKijpyXqALYzWPu41b0a6UVB80FU+18rcE=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Victor",
+    "last_name": "Madrid",
+    "email": "admin@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-23T20:47:50.355Z",
+    "role": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$14MfPttlW2d1DQ9HEQGVgx$wZSprrr01MqaGznUSeu725ACOH8gWTqeSdd/wB90CN8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "manager1",
+    "first_name": "Victor",
+    "last_name": "Barcelona",
+    "email": "manager1@manager.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-23T20:47:50.698Z",
+    "role": "manager",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$5BEAb0zKnMrAfYzs1lFzXH$G11iS8X0ymO9rVvHgX5aFaxxMl2TNqkzXcc1RjGupSo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "trainer1",
+    "first_name": "Victor",
+    "last_name": "Valencia",
+    "email": "trainer1@trainer.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-23T20:47:51.010Z",
+    "role": "trainer",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$DZAWQFrDv6IVbNpb2OcMY1$fmzN88Ss/CicuyaRV3RygznMTiVgCkBsKwgplZtrrKw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "employee1",
+    "first_name": "Victor",
+    "last_name": "Seville",
+    "email": "employee1@employee.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-23T20:47:51.323Z",
+    "role": "employee",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.department",
+  "pk": 1,
+  "fields": {
+    "name": "Sales",
+    "manager": 1
+  }
+},
+{
+  "model": "core.admin",
+  "pk": 1,
+  "fields": {
+    "user": 1
+  }
+},
+{
+  "model": "core.manager",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "department": 1
+  }
+},
+{
+  "model": "core.trainer",
+  "pk": 1,
+  "fields": {
+    "user": 3
+  }
+},
+{
+  "model": "core.employee",
+  "pk": 1,
+  "fields": {
+    "user": 4,
+    "department": 1
+  }
+},
+{
+  "model": "core.trainingmodule",
+  "pk": 1,
+  "fields": {
+    "title": "Fire Safety",
+    "description": "Learn how to safely respond to fire hazards.",
+    "created_by": 1
+  }
+},
+{
+  "model": "core.trainingmodule",
+  "pk": 2,
+  "fields": {
+    "title": "Cyber Awareness",
+    "description": "Recognize and prevent cyber threats.",
+    "created_by": 1
+  }
+},
+{
+  "model": "core.trainingmodule",
+  "pk": 3,
+  "fields": {
+    "title": "Workplace Ethics",
+    "description": "How to behave at work.",
+    "created_by": 1
+  }
+},
+{
+  "model": "core.assignment",
+  "pk": 1,
+  "fields": {
+    "employee": 1,
+    "module": 1,
+    "assigned_by": 1,
+    "assigned_on": "2025-04-23T20:47:51.897Z",
+    "status": "Completed"
+  }
+},
+{
+  "model": "core.assignment",
+  "pk": 2,
+  "fields": {
+    "employee": 1,
+    "module": 2,
+    "assigned_by": 1,
+    "assigned_on": "2025-04-23T20:47:52.081Z",
+    "status": "Completed"
+  }
+},
+{
+  "model": "core.assignment",
+  "pk": 3,
+  "fields": {
+    "employee": 1,
+    "module": 3,
+    "assigned_by": 1,
+    "assigned_on": "2025-04-23T20:47:52.223Z",
+    "status": "Not Started"
+  }
+},
+{
+  "model": "core.completion",
+  "pk": 1,
+  "fields": {
+    "employee": 1,
+    "module": 1,
+    "completed_on": "2025-04-23T20:47:51.941Z"
+  }
+},
+{
+  "model": "core.completion",
+  "pk": 2,
+  "fields": {
+    "employee": 1,
+    "module": 2,
+    "completed_on": "2025-04-23T20:47:52.154Z"
+  }
+},
+{
+  "model": "core.feedback",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "module": 1,
+    "comment": "Very nice and cool.",
+    "rating": 4,
+    "created_at": "2025-04-23T20:47:51.975Z"
+  }
+},
+{
+  "model": "core.feedback",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "module": 2,
+    "comment": "Very bad",
+    "rating": 2,
+    "created_at": "2025-04-23T20:47:52.122Z"
+  }
+},
+{
+  "model": "core.feedbackresponse",
+  "pk": 1,
+  "fields": {
+    "feedback": 1,
+    "responder": 1,
+    "response_text": "Thanks man.",
+    "responded_at": "2025-04-23T20:47:52.015Z"
+  }
+}
+]
